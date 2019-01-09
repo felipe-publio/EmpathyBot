@@ -44,21 +44,23 @@ def emotion(faces):
 
         for x in emotionsCat.values():                  #É gerado uma lib com as emoções e seus valores proporcionais
             emotions = x
-    except:
-        print "This is an error message!"    
 
-   # x['neutral'] = 0                               #Opção para zerar o valor 'neutro'
+        # x['neutral'] = 0                               #Opção para zerar o valor 'neutro'
     
-    predominante = max(emotions, key=emotions.get)  #Expressão com maior valor é definida como predominante
+        predominante = max(emotions, key=emotions.get)  #Expressão com maior valor é definida como predominante
 
-    vozes(predominante)                             #Função vozes é chamada e valor da emoção predominante é enviado
+        vozes(predominante)                             #Função vozes é chamada e valor da emoção predominante é enviado
 
-    print '***************************************************************************************'
-    print 'O Resultado Geral da sua Expressão Foi: ' 
-    print  emotions           
-    print 'A expressão predominante é de: '                        
-    print predominante
-    print '*************************************************************************************** \n\n\n\n\n\n'
+        print '\n *****************************************************************************'
+        print '\n O Resultado Geral da sua Expressão Foi: \n' 
+        print  emotions           
+        print '\n A expressão predominante é de: \n'                        
+        print predominante
+        print '\n ***************************************************************************** \n\n'
+
+    except:
+        print "**** ERROR - Não consegui identificar seu rosto!!! ****"
+        os.system('aplay /home/pi/EmpathyBot/audio/error.wav')
 
 def vozes(predominante):                            #Com o valor da emoção predominante recebido o audio com a conrrespodente será executado
     if   predominante == 'anger':
@@ -100,6 +102,16 @@ def andar(power):
     
 def main():
 
+     while True:
+         print '\n Olá, Mané! Vou descobrir suas emoções!'
+         os.system('aplay /home/pi/EmpathyBot/audio/hello.wav')
+         azure()
+         ot = time.time()
+         print 'Nova leitura em 3 segundos...'
+         while(time.time() - ot < 3):    #running while loop for 3 seconds
+             BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
+             time.sleep(.1)
+     
      while True:
          
         ot = time.time()
