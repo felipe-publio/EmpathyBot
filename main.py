@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 # pip install cognitive_face
 #
-# **************************
-# https://brazilsouth.api.cognitive.microsoft.com/face/v1.0
-# 7b111ef8ee564500afb07f87fe402f7b
-# **************************
-#
 
 from BrickPi import *
 BrickPiSetup()
@@ -26,10 +21,10 @@ def takephoto():                        #Função que realiza a fotografia e ret
 
 def azure():                                                                             #Função Responsavel pela conexão com o MicrosoftAzure
     try:
-        KEY = '7b111ef8ee564500afb07f87fe402f7b'                                             #Chave gerada pela MS para conexão com sua conta
+        KEY = ''  #Chave gerada pela MS para conexão com sua conta
         CF.Key.set(KEY)
 
-        BASE_URL = 'https://brazilsouth.api.cognitive.microsoft.com/face/v1.0'               #URL da API Cognitive Face do Brasil
+        BASE_URL = 'https://brazilsouth.api.cognitive.microsoft.com/face/v1.0'           #URL da API Cognitive Face do Brasil
         CF.BaseUrl.set(BASE_URL)
 
         image = takephoto()                                                                 #Chama a função TakePhoto e Recebe a ultima imagem fotografada
