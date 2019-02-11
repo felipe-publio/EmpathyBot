@@ -1,0 +1,13 @@
+-EmpathyBot-
+
+OS: https://www.dexterindustries.com/raspbian-for-robots/
+
+Script: Python2 - main.py
+
+Preparação do Ambiente:
+
+@ pip install cognitive_face
+
+Local dos arquivos:
+'/home/pi/EmpathyBot/'
+
