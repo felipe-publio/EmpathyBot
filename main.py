@@ -25,17 +25,20 @@ def takephoto():                        #Função que realiza a fotografia e ret
     return captura                      #Retorna ultima imagem capturada
 
 def azure():                                                                             #Função Responsavel pela conexão com o MicrosoftAzure
-    KEY = '7b111ef8ee564500afb07f87fe402f7b'                                             #Chave gerada pela MS para conexão com sua conta
-    CF.Key.set(KEY)
+    try:
+        KEY = '7b111ef8ee564500afb07f87fe402f7b'                                             #Chave gerada pela MS para conexão com sua conta
+        CF.Key.set(KEY)
 
-    BASE_URL = 'https://brazilsouth.api.cognitive.microsoft.com/face/v1.0'               #URL da API Cognitive Face do Brasil
-    CF.BaseUrl.set(BASE_URL)
+        BASE_URL = 'https://brazilsouth.api.cognitive.microsoft.com/face/v1.0'               #URL da API Cognitive Face do Brasil
+        CF.BaseUrl.set(BASE_URL)
 
-    image = takephoto()                                                                 #Chama a função TakePhoto e Recebe a ultima imagem fotografada
-    faces = CF.face.detect(image, face_id=False, landmarks=False, attributes='emotion') #Imagem é enviada para a API Congnitive Faces junto aos parametros esperados para o retorno
-
-    emotion(faces)                                  #Função emotion é chamada e valor recebido pelo Azure é enviado
-
+        image = takephoto()                                                                 #Chama a função TakePhoto e Recebe a ultima imagem fotografada
+        faces = CF.face.detect(image, face_id=False, landmarks=False, attributes='emotion') #Imagem é enviada para a API Congnitive Faces junto aos parametros esperados para o retorno
+    
+        emotion(faces)                                  #Função emotion é chamada e valor recebido pelo Azure é enviado
+    except:
+        print "**** ERROR - Não consegui conectar na internet!!! ****"
+        os.system('aplay /home/pi/EmpathyBot/audio/internet.wav')
 
 def emotion(faces):
     try:
@@ -99,35 +102,49 @@ def andar(power):
     print "Andando Para Frente."
     BrickPi.MotorSpeed[PORT_A] = power
     BrickPi.MotorSpeed[PORT_D] = power
-    
+
+def tempo(qt):
+
+    ot = time.time()
+    while(time.time() - ot < qt):  
+        BrickPiUpdateValues()    
+        time.sleep(.1)
+            
 def main():
 
-     while True:
-         print '\n Olá, Mané! Vou descobrir suas emoções!'
-         os.system('aplay /home/pi/EmpathyBot/audio/hello.wav')
-         azure()
-         ot = time.time()
-         print 'Nova leitura em 3 segundos...'
-         while(time.time() - ot < 3):    #running while loop for 3 seconds
-             BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
-             time.sleep(.1)
+     tempo(5)
      
      while True:
          
-        ot = time.time()
-        while(time.time() - ot < 3):    #running while loop for 3 seconds
-            BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
-            time.sleep(.1)
-    
+        tempo(1.8)
+        
         if sensor_toque():
-
-            andar(150)
-            BrickPiUpdateValues()
+            
+            print '\n Olá, Mané! Vou descobrir suas emoções!'
             os.system('aplay /home/pi/EmpathyBot/audio/hello.wav')
+            
+            tempo(0.6)
+            
+            andar(-70)
+            BrickPiUpdateValues()
+            
+            tempo(0.8)
+                
             andar(0)
             BrickPiUpdateValues()
-            azure()
             
+            tempo(1)
+            
+            azure()
+
+            andar(70)
+            BrickPiUpdateValues()
+
+            tempo(0.8)
+            andar(0)
+            BrickPiUpdateValues()
+
+
             
 if __name__ == '__main__':
 
